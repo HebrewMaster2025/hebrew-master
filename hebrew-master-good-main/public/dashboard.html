@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hebrew Master - Learning Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-purple: #9D4EDD;
+            --neon-blue: #00D4FF;
+            --neon-pink: #FF10F0;
+            --neon-green: #39FF14;
+            --dark-bg: #0A0E27;
+            --darker-bg: #050714;
+            --glass-white: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #FFFFFF;
+            --text-secondary: #B8BCC8;
+            --gold-accent: #FFD700;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(125deg, #0A0E27 0%, #050714 25%, #0F0C29 50%, #24243e 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .nav-header {
+            padding: 15px 20px;
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(10, 14, 39, 0) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-futuristic {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-hologram {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            margin-right: 12px;
+            animation: hologram-pulse 2s infinite;
+            box-shadow: 0 0 25px var(--neon-purple);
+        }
+        
+        @keyframes hologram-pulse {
+            0%, 100% {
+                transform: rotateY(0deg) scale(1);
+                box-shadow: 0 0 25px var(--neon-purple);
+            }
+            50% {
+                transform: rotateY(180deg) scale(1.1);
+                box-shadow: 0 0 40px var(--neon-blue);
+            }
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logout-btn {
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-white);
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 68, 68, 0.2);
+            border-color: #ff4444;
+            color: #ff4444;
+            transform: translateY(-2px);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+        }
+        
+        .welcome-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(180deg, var(--text-primary) 0%, var(--neon-blue) 50%, var(--neon-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            animation: title-glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes title-glow {
+            0%, 100% { filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.5)); }
+            50% { filter: drop-shadow(0 0 50px rgba(157, 78, 221, 0.8)); }
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+        
+        .progress-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .progress-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+        
+        .stat-box {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+        
+        .stat-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .lesson-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(40px);
+            border: 2px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 35px 25px;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+        
+        .lesson-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.4);
+        }
+        
+        .lesson-card.completed {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
+        }
+        
+        .lesson-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .lesson-card.locked:hover {
+            transform: none;
+            border-color: var(--glass-border);
+        }
+        
+        .lesson-icon-3d {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 25px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: hypnotic-rotation 24s ease-in-out infinite;
+        }
+        
+        @keyframes hypnotic-rotation {
+            0% { transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg); }
+            16.66% { transform: rotateY(60deg) rotateX(30deg) rotateZ(15deg); }
+            33.33% { transform: rotateY(120deg) rotateX(90deg) rotateZ(30deg); }
+            50% { transform: rotateY(180deg) rotateX(180deg) rotateZ(90deg); }
+            66.66% { transform: rotateY(240deg) rotateX(270deg) rotateZ(180deg); }
+            83.33% { transform: rotateY(300deg) rotateX(330deg) rotateZ(270deg); }
+            100% { transform: rotateY(360deg) rotateX(360deg) rotateZ(360deg); }
+        }
+        
+        .lesson-icon-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .lesson-icon-face.front {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.95) 0%, rgba(0, 212, 255, 0.9) 50%, rgba(255, 16, 240, 0.85) 100%);
+            transform: translateZ(35px);
+        }
+        
+        .lesson-icon-face.back {
+            background: linear-gradient(315deg, rgba(57, 255, 20, 0.75) 0%, rgba(255, 215, 0, 0.7) 50%, rgba(255, 16, 240, 0.65) 100%);
+            transform: translateZ(-35px) rotateY(180deg);
+        }
+        
+        .lesson-icon-face.top {
+            background: linear-gradient(45deg, rgba(0, 212, 255, 0.9) 0%, rgba(255, 215, 0, 0.75) 100%);
+            transform: rotateX(90deg) translateZ(35px);
+        }
+        
+        .lesson-icon-face.bottom {
+            background: linear-gradient(225deg, rgba(255, 16, 240, 0.85) 0%, rgba(157, 78, 221, 0.7) 100%);
+            transform: rotateX(-90deg) translateZ(35px);
+        }
+        
+        .lesson-icon-face.left {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.85) 0%, rgba(157, 78, 221, 0.7) 100%);
+            transform: rotateY(-90deg) translateZ(35px);
+        }
+        
+        .lesson-icon-face.right {
+            background: linear-gradient(45deg, rgba(57, 255, 20, 0.85) 0%, rgba(0, 212, 255, 0.7) 100%);
+            transform: rotateY(90deg) translateZ(35px);
+        }
+        
+        .lesson-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            color: var(--neon-blue);
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .lesson-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+        
+        .lesson-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .status-completed {
+            background: rgba(57, 255, 20, 0.2);
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+        }
+        
+        .status-start {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            color: white;
+            border: none;
+        }
+        
+        .status-locked {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+        
+        .action-btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-secondary {
+            background: var(--glass-white);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--neon-blue);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .welcome-text {
+                font-size: 32px;
+            }
+            
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <header class="nav-header">
+        <div class="nav-container">
+            <a href="/" class="logo-futuristic">
+                <div class="logo-hologram">א</div>
+                <span class="logo-text">Hebrew Master</span>
+            </a>
+            <button class="logout-btn" onclick="handleLogout()">🚪 Logout</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="welcome-section">
+            <h1 class="welcome-text" id="welcome-text">Welcome Back!</h1>
+            <p class="subtitle">Continue your Hebrew mastery journey</p>
+        </div>
+
+        <div class="progress-card">
+            <h2 class="progress-title">Your Progress</h2>
+            <div class="progress-stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="lessons-completed">0</div>
+                    <div class="stat-label">Lessons Completed</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="progress-percent">0%</div>
+                    <div class="stat-label">Overall Progress</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="streak-count">0</div>
+                    <div class="stat-label">Day Streak 🔥</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">📚 Your Lessons</h2>
+        
+        <div class="lessons-grid" id="lessons-grid"></div>
+
+        <div class="quick-actions">
+            <a href="/placement-test" class="action-btn btn-secondary">📊 Retake Placement Test</a>
+            <button class="action-btn btn-secondary" onclick="resetProgress()">🔄 Reset Progress</button>
+        </div>
+    </div>
+
+    <!-- Firebase v8 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <!-- Our centralized config -->
+    <script src="/js/firebase-init.js"></script>
+    <script src="/js/state-manager.js"></script>
+
+    <script>
+        const auth = window.FirebaseApp.auth;
+
+        // Protect this page - require authentication
+        auth.onAuthStateChanged(async user => {
+            if (!user) {
+                console.log('User not authenticated, redirecting to login');
+                window.location.href = '/login';
+            } else {
+                console.log('User authenticated:', user.email);
+                await loadUserData();
+            }
+        });
+
+        const lessons = [
+            {
+                id: 1,
+                title: 'Letter Aleph',
+                letter: 'א',
+                sound: 'ah',
+                description: 'Master the first letter of Hebrew',
+                file: 'lesson.html'
+            },
+            {
+                id: 2,
+                title: 'Letter Bet',
+                letter: 'ב',
+                sound: 'b',
+                description: 'Learn the second Hebrew letter',
+                file: 'lesson2.html'
+            },
+            {
+                id: 3,
+                title: 'Letter Gimel',
+                letter: 'ג',
+                sound: 'g',
+                description: 'Discover the third letter',
+                file: 'lesson3.html'
+            },
+            {
+                id: 4,
+                title: 'Letter Dalet',
+                letter: 'ד',
+                sound: 'd',
+                description: 'Coming soon!',
+                file: null
+            },
+            {
+                id: 5,
+                title: 'Letter Hey',
+                letter: 'ה',
+                sound: 'h',
+                description: 'Coming soon!',
+                file: null
+            },
+            {
+                id: 6,
+                title: 'Letter Vav',
+                letter: 'ו',
+                sound: 'v',
+                description: 'Coming soon!',
+                file: null
+            }
+        ];
+
+        async function loadUserData() {
+            const userProfile = await window.StateManager.getUserProfile();
+            const userName = userProfile.name || userProfile.displayName || 'Friend';
+            document.getElementById('welcome-text').textContent = 'Welcome Back, ' + userName + '!';
+
+            const progress = await window.StateManager.getProgress();
+            const completedCount = Object.keys(progress).filter(key => key.startsWith('lesson') && progress[key].completed).length;
+            
+            document.getElementById('lessons-completed').textContent = completedCount;
+            document.getElementById('progress-percent').textContent = Math.round((completedCount / 60) * 100) + '%';
+            
+            const streak = await window.StateManager.getStreak();
+            document.getElementById('streak-count').textContent = streak;
+
+            await renderLessons(progress);
+        }
+
+        async function renderLessons(progress) {
+            const grid = document.getElementById('lessons-grid');
+            
+            grid.innerHTML = lessons.map((lesson, index) => {
+                const isCompleted = progress['lesson' + lesson.id]?.completed;
+                const isLocked = !lesson.file || (index > 0 && !progress['lesson' + (lesson.id - 1)]?.completed);
+                
+                let statusHTML = '';
+                let cardClass = 'lesson-card';
+                let clickHandler = '';
+                
+                if (isCompleted) {
+                    statusHTML = '<span class="status-badge status-completed">✓ Completed</span>';
+                    cardClass += ' completed';
+                    clickHandler = lesson.file ? `onclick="window.location.href='${lesson.file}'"` : '';
+                } else if (isLocked) {
+                    statusHTML = '<span class="status-badge status-locked">🔒 Locked</span>';
+                    cardClass += ' locked';
+                } else if (lesson.file) {
+                    statusHTML = '<span class="status-badge status-start">▶ Start Lesson</span>';
+                    clickHandler = `onclick="window.location.href='${lesson.file}'"`;
+                } else {
+                    statusHTML = '<span class="status-badge status-locked">Coming Soon</span>';
+                    cardClass += ' locked';
+                }
+
+                return `
+                    <div class="${cardClass}" ${clickHandler}>
+                        <div class="lesson-icon-3d">
+                            <div class="lesson-icon-face front">${lesson.letter}</div>
+                            <div class="lesson-icon-face back">${lesson.letter}</div>
+                            <div class="lesson-icon-face top">${lesson.letter}</div>
+                            <div class="lesson-icon-face bottom">${lesson.letter}</div>
+                            <div class="lesson-icon-face left">${lesson.letter}</div>
+                            <div class="lesson-icon-face right">${lesson.letter}</div>
+                        </div>
+                        <div class="lesson-number">LESSON ${lesson.id}</div>
+                        <div class="lesson-title">${lesson.title}</div>
+                        <div class="lesson-description">${lesson.description}</div>
+                        ${statusHTML}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                await window.FirebaseApp.signOut();
+            }
+        }
+
+        async function resetProgress() {
+            if (confirm('Are you sure you want to reset all your progress?')) {
+                await window.StateManager.clear();
+                location.reload();
+            }
+        }
+
+        async function updateStreak() {
+            await window.StateManager.updateStreak();
+        }
+
+        // Stars animation
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        updateStreak();
+    </script>
+</body>
+</html>

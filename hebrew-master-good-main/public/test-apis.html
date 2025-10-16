@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - Hebrew Master</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #666;
+            margin-top: 0;
+        }
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #4f46e5;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .result {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .error {
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+        .success {
+            background: #f0fdf4;
+            border: 1px solid #22c55e;
+            color: #166534;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Hebrew Master - API Testing</h1>
+    <p>Test all your APIs to make sure they're working correctly.</p>
+
+    <!-- Translation Test -->
+    <div class="test-section">
+        <h2>🔤 Translation API Test (OpenAI)</h2>
+        <input type="text" id="translateInput" placeholder="Enter English text to translate to Hebrew" value="Hello, how are you?">
+        <button onclick="testTranslation()">Translate to Hebrew</button>
+        <div id="translationResult"></div>
+    </div>
+
+    <!-- Text-to-Speech Test -->
+    <div class="test-section">
+        <h2>🔊 Text-to-Speech API Test (ElevenLabs)</h2>
+        <input type="text" id="ttsInput" placeholder="Enter Hebrew text to speak" value="שלום">
+        <button onclick="testTextToSpeech()">Generate Speech</button>
+        <div id="ttsResult"></div>
+        <audio id="audioPlayer" controls style="width: 100%; margin-top: 10px; display: none;"></audio>
+    </div>
+
+    <!-- Stripe Checkout Test -->
+    <div class="test-section">
+        <h2>💳 Stripe Checkout API Test</h2>
+        <p>Note: This will create a test checkout session. You need to create a price in Stripe first.</p>
+        <input type="text" id="priceInput" placeholder="Enter Stripe Price ID (e.g., price_xxxxx)">
+        <button onclick="testCheckout()">Create Checkout Session</button>
+        <div id="checkoutResult"></div>
+    </div>
+
+    <!-- Environment Check -->
+    <div class="test-section">
+        <h2>⚙️ Environment Variables Check</h2>
+        <button onclick="checkEnvironment()">Check API Configuration</button>
+        <div id="envResult"></div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+
+        async function testTranslation() {
+            const input = document.getElementById('translateInput').value;
+            const resultDiv = document.getElementById('translationResult');
+            
+            resultDiv.innerHTML = '<div class="result">⏳ Translating...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/translate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: input })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <strong>✅ Success!</strong><br><br>
+                            <strong>Original:</strong> ${data.original}<br>
+                            <strong>Hebrew Translation:</strong> ${data.translation}
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.error || 'Translation failed');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <strong>❌ Error:</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        async function testTextToSpeech() {
+            const input = document.getElementById('ttsInput').value;
+            const resultDiv = document.getElementById('ttsResult');
+            const audioPlayer = document.getElementById('audioPlayer');
+            
+            resultDiv.innerHTML = '<div class="result">⏳ Generating speech...</div>';
+            audioPlayer.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_BASE}/textToSpeech`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: input })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    audioPlayer.src = data.audio;
+                    audioPlayer.style.display = 'block';
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <strong>✅ Success!</strong><br>
+                            Audio generated! Play it below.
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.error || 'Text-to-speech failed');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <strong>❌ Error:</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        async function testCheckout() {
+            const priceId = document.getElementById('priceInput').value;
+            const resultDiv = document.getElementById('checkoutResult');
+            
+            if (!priceId) {
+                resultDiv.innerHTML = '<div class="result error">❌ Please enter a Stripe Price ID</div>';
+                return;
+            }
+
+            resultDiv.innerHTML = '<div class="result">⏳ Creating checkout session...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/createCheckout`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        priceId: priceId,
+                        userId: 'test-user-123'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <strong>✅ Success!</strong><br><br>
+                            <strong>Session ID:</strong> ${data.sessionId}<br>
+                            <strong>Checkout URL:</strong> <a href="${data.url}" target="_blank">${data.url}</a><br><br>
+                            <button onclick="window.open('${data.url}', '_blank')">Open Checkout Page</button>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.error || 'Checkout creation failed');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <strong>❌ Error:</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function checkEnvironment() {
+            const resultDiv = document.getElementById('envResult');
+            resultDiv.innerHTML = `
+                <div class="result">
+                    <strong>Environment Variables Status:</strong><br><br>
+                    Environment variables are configured on the server side and are not accessible from the browser for security reasons.<br><br>
+                    <strong>To verify they're set:</strong><br>
+                    1. Test each API above<br>
+                    2. If APIs work = Environment variables are correctly configured ✅<br>
+                    3. If APIs fail = Check Vercel environment variables settings ⚙️<br><br>
+                    <strong>Expected variables:</strong><br>
+                    • OPENAI_API_KEY<br>
+                    • ELEVENLABS_API_KEY<br>
+                    • STRIPE_SECRET_KEY<br>
+                    • FIREBASE_API_KEY<br>
+                    • And 7 more...
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

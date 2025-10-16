@@ -1,0 +1,8 @@
+{
+  "name": "hebrew-master",
+  "version": "1.0.1",
+  "dependencies": {
+    "stripe": "^14.10.0",
+    "firebase-admin": "^12.0.0"
+  }
+}

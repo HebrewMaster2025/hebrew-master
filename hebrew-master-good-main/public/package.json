@@ -1,0 +1,32 @@
+{
+  "name": "hebrew-master",
+  "version": "1.0.0",
+  "description": "AI-powered Hebrew learning platform with personalized lessons",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required'",
+    "test": "echo 'Tests coming soon'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "hebrew",
+    "language-learning",
+    "education",
+    "ai",
+    "gpt-4",
+    "elevenlabs"
+  ],
+  "author": "Hebrew Master",
+  "license": "MIT",
+  "dependencies": {
+    "stripe": "^14.10.0",
+    "firebase-admin": "^12.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

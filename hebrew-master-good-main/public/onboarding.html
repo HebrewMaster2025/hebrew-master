@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level Assessment - Hebrew Master</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 2rem 5%;
+        }
+
+        #canvas3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .quiz-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 700px;
+            padding: 3rem 2.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .question-number {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #fff 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(168, 85, 247, 0.5);
+            transform: translateX(10px);
+        }
+
+        .option-btn.selected {
+            background: rgba(168, 85, 247, 0.3);
+            border-color: #a855f7;
+            transform: translateX(10px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .result-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: bounce 1s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .result-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-description {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .continue-btn {
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            background-size: 200% 200%;
+            animation: gradientShift 4s ease infinite;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(99, 102, 241, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 2rem 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .option-btn {
+                font-size: 1rem;
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas3d"></canvas>
+
+    <div class="quiz-container">
+        <div id="quizScreen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <div class="question-number" id="questionNumber">Question 1 of 5</div>
+
+            <h2 id="question">What's your current Hebrew level?</h2>
+
+            <div class="options" id="options"></div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-back" id="backBtn" onclick="previousQuestion()" style="display: none;">← Back</button>
+                <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
+            </div>
+        </div>
+
+        <div class="result-screen" id="resultScreen">
+            <div class="result-icon" id="resultIcon">🎯</div>
+            <h2 class="result-title" id="resultTitle">You're a Beginner!</h2>
+            <p class="result-description" id="resultDescription">
+                Perfect! We'll start with the Hebrew alphabet and basic phrases. 
+                You'll be speaking Hebrew in no time!
+            </p>
+            <button class="continue-btn" onclick="window.location.href='pricing.html'">
+                Choose Your Plan →
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const questions = [
+            {
+                question: "What's your current Hebrew level?",
+                options: [
+                    "Complete beginner - I know nothing",
+                    "I know the alphabet",
+                    "I can read simple words",
+                    "I can have basic conversations",
+                    "I'm fluent but want to improve"
+                ]
+            },
+            {
+                question: "Why do you want to learn Hebrew?",
+                options: [
+                    "Travel to Israel",
+                    "Connect with family/heritage",
+                    "Religious/spiritual reasons",
+                    "Career opportunities",
+                    "Just for fun!"
+                ]
+            },
+            {
+                question: "How much time can you dedicate daily?",
+                options: [
+                    "5-10 minutes",
+                    "15-20 minutes",
+                    "30 minutes",
+                    "1 hour",
+                    "2+ hours"
+                ]
+            },
+            {
+                question: "What's your learning style?",
+                options: [
+                    "Visual (images, videos)",
+                    "Auditory (listening, speaking)",
+                    "Reading & writing",
+                    "Interactive games",
+                    "Mix of everything"
+                ]
+            },
+            {
+                question: "What's your main goal?",
+                options: [
+                    "Basic conversation skills",
+                    "Read Hebrew texts",
+                    "Understand Israeli media",
+                    "Business Hebrew",
+                    "Complete fluency"
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question').textContent = q.question;
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            
+            const optionsHtml = q.options.map((option, index) => 
+                `<button class="option-btn" onclick="selectOption(${index})">${option}</button>`
+            ).join('');
+            
+            document.getElementById('options').innerHTML = optionsHtml;
+            
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            document.getElementById('backBtn').style.display = currentQuestion > 0 ? 'block' : 'none';
+            document.getElementById('nextBtn').disabled = true;
+        }
+
+        function selectOption(index) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            buttons[index].classList.add('selected');
+            
+            answers[currentQuestion] = index;
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+                if (answers[currentQuestion] !== undefined) {
+                    const buttons = document.querySelectorAll('.option-btn');
+                    buttons[answers[currentQuestion]].classList.add('selected');
+                    document.getElementById('nextBtn').disabled = false;
+                }
+            }
+        }
+
+        function showResults() {
+            const level = answers[0];
+            const results = [
+                {
+                    icon: '🌱',
+                    title: "You're a Beginner!",
+                    description: "Perfect! We'll start with the Hebrew alphabet and basic phrases. You'll be reading and speaking Hebrew in no time!",
+                    startLevel: 'aleph'
+                },
+                {
+                    icon: '📖',
+                    title: "You're Elementary!",
+                    description: "Great foundation! We'll build on your alphabet knowledge with vocabulary and simple conversations.",
+                    startLevel: 'bet'
+                },
+                {
+                    icon: '🗣️',
+                    title: "You're Intermediate!",
+                    description: "Excellent! We'll expand your vocabulary and help you speak more fluently in everyday situations.",
+                    startLevel: 'gimel'
+                },
+                {
+                    icon: '💬',
+                    title: "You're Advanced!",
+                    description: "Impressive! We'll refine your grammar and help you master complex conversations.",
+                    startLevel: 'dalet'
+                },
+                {
+                    icon: '🎓',
+                    title: "You're Nearly Fluent!",
+                    description: "Amazing! We'll polish your skills and help you achieve complete fluency in Hebrew.",
+                    startLevel: 'advanced'
+                }
+            ];
+
+            const result = results[level];
+            
+            // Store user profile
+            const user = JSON.parse(localStorage.getItem('hebrewMasterUser') || '{}');
+            user.level = result.startLevel;
+            user.answers = answers;
+            user.dailyGoalMinutes = [5, 15, 30, 60, 120][answers[2] || 0];
+            localStorage.setItem('hebrewMasterUser', JSON.stringify(user));
+
+            document.getElementById('resultIcon').textContent = result.icon;
+            document.getElementById('resultTitle').textContent = result.title;
+            document.getElementById('resultDescription').textContent = result.description;
+            
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+        }
+
+        // 3D Background
+        const canvas = document.getElementById('canvas3d');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.z = 8;
+
+        const geometry = new THREE.IcosahedronGeometry(0.6, 1);
+        const material = new THREE.MeshPhongMaterial({ color: 0xa855f7, wireframe: true, transparent: true, opacity: 0.35 });
+        
+        const shapes = [];
+        for (let i = 0; i < 12; i++) {
+            const mesh = new THREE.Mesh(geometry, material.clone());
+            mesh.position.x = (Math.random() - 0.5) * 20;
+            mesh.position.y = (Math.random() - 0.5) * 20;
+            mesh.position.z = (Math.random() - 0.5) * 15;
+            mesh.rotation.x = Math.random() * Math.PI;
+            mesh.rotation.y = Math.random() * Math.PI;
+            mesh.userData.velocity = {
+                rotationX: (Math.random() - 0.5) * 0.008,
+                rotationY: (Math.random() - 0.5) * 0.008
+            };
+            scene.add(mesh);
+            shapes.push(mesh);
+        }
+
+        const light = new THREE.PointLight(0x6366f1, 1.5, 100);
+        light.position.set(8, 8, 8);
+        scene.add(light);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            shapes.forEach(function(shape) {
+                shape.rotation.x += shape.userData.velocity.rotationX;
+                shape.rotation.y += shape.userData.velocity.rotationY;
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        renderQuestion();
+    </script>
+</body>
+</html>

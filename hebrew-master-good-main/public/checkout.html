@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Hebrew Master</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            padding: 4rem 5%;
+        }
+
+        #canvas3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .checkout-container {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        .payment-form {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 3rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #fff 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: rgba(168, 85, 247, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            background-size: 200% 200%;
+            animation: gradientShift 4s ease infinite;
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            margin-top: 1rem;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.6);
+        }
+
+        .order-summary {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 3rem 2rem;
+            height: fit-content;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .plan-info {
+            background: rgba(168, 85, 247, 0.2);
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .plan-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .summary-row.total {
+            border: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+
+        .features-included {
+            margin-top: 2rem;
+        }
+
+        .features-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .feature-item::before {
+            content: '✓';
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .security-badge {
+            margin-top: 2rem;
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .card-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas3d"></canvas>
+
+    <div class="checkout-container">
+        <div class="payment-form">
+            <h1>Complete Your Purchase</h1>
+
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label for="name">Cardholder Name</label>
+                    <input type="text" id="name" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" required>
+                </div>
+
+                <div class="card-row">
+                    <div class="form-group">
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="3" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="zip">ZIP Code</label>
+                        <input type="text" id="zip" placeholder="12345" maxlength="5" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Complete Payment 🔒</button>
+
+                <div class="security-badge">
+                    🔒 Secure payment powered by Stripe. Your data is encrypted and safe.
+                </div>
+            </form>
+        </div>
+
+        <div class="order-summary">
+            <div class="summary-title">Order Summary</div>
+
+            <div class="plan-info">
+                <div class="plan-name" id="planName">Premium Plan</div>
+                <div class="plan-desc" id="planDesc">Monthly subscription</div>
+            </div>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotal">$19.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Tax</span>
+                <span>$0.00</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="total">$19.00</span>
+            </div>
+
+            <div class="features-included">
+                <div class="features-title">What's included:</div>
+                <div class="feature-item">Unlimited AI lessons</div>
+                <div class="feature-item">Premium voice features</div>
+                <div class="feature-item">Advanced exercises</div>
+                <div class="feature-item">Progress analytics</div>
+                <div class="feature-item">Priority support</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Get plan from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get('plan') || 'premium';
+
+        const plans = {
+            premium: {
+                name: 'Premium Plan',
+                desc: 'Monthly subscription',
+                price: 19
+            },
+            lifetime: {
+                name: 'Lifetime Access',
+                desc: 'One-time payment',
+                price: 199
+            }
+        };
+
+        const selectedPlan = plans[plan];
+        document.getElementById('planName').textContent = selectedPlan.name;
+        document.getElementById('planDesc').textContent = selectedPlan.desc;
+        document.getElementById('subtotal').textContent = '$' + selectedPlan.price + '.00';
+        document.getElementById('total').textContent = '$' + selectedPlan.price + '.00';
+
+        // Card formatting
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formatted;
+        });
+
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // Form submission
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // In production, this would integrate with Stripe API
+            alert('🎉 Payment Demo\n\nIn production, this would:\n1. Validate card with Stripe\n2. Process payment securely\n3. Create subscription\n4. Send confirmation email\n\nFor now, simulating successful payment...');
+
+            const user = JSON.parse(localStorage.getItem('hebrewMasterUser') || '{}');
+            user.plan = plan;
+            user.paymentDate = new Date().toISOString();
+            user.subscriptionActive = true;
+            localStorage.setItem('hebrewMasterUser', JSON.stringify(user));
+
+            setTimeout(function() {
+                window.location.href = 'dashboard.html?welcome=true';
+            }, 1000);
+        });
+
+        // 3D Background (same as other pages)
+        const canvas = document.getElementById('canvas3d');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.z = 8;
+
+        const geometry = new THREE.IcosahedronGeometry(0.6, 1);
+        const material = new THREE.MeshPhongMaterial({ color: 0xa855f7, wireframe: true, transparent: true, opacity: 0.35 });
+        
+        const shapes = [];
+        for (let i = 0; i < 15; i++) {
+            const mesh = new THREE.Mesh(geometry, material.clone());
+            mesh.position.x = (Math.random() - 0.5) * 20;
+            mesh.position.y = (Math.random() - 0.5) * 20;
+            mesh.position.z = (Math.random() - 0.5) * 15;
+            mesh.userData.velocity = {
+                rotationX: (Math.random() - 0.5) * 0.008,
+                rotationY: (Math.random() - 0.5) * 0.008
+            };
+            scene.add(mesh);
+            shapes.push(mesh);
+        }
+
+        const light = new THREE.PointLight(0x6366f1, 1.5, 100);
+        light.position.set(8, 8, 8);
+        scene.add(light);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            shapes.forEach(function(shape) {
+                shape.rotation.x += shape.userData.velocity.rotationX;
+                shape.rotation.y += shape.userData.velocity.rotationY;
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

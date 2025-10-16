@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1: Aleph | Hebrew Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-purple: #9D4EDD;
+            --neon-blue: #00D4FF;
+            --neon-pink: #FF10F0;
+            --neon-green: #39FF14;
+            --gold: #FFD700;
+            --dark-bg: #0A0E27;
+            --darker-bg: #050714;
+            --glass-white: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #FFFFFF;
+            --text-secondary: #B8BCC8;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(125deg, #0A0E27 0%, #050714 25%, #0F0C29 50%, #24243e 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .nav-header {
+            padding: 15px 20px;
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(10, 14, 39, 0) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-futuristic {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-hologram {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            margin-right: 12px;
+            animation: hologram-pulse 2s infinite;
+            box-shadow: 0 0 25px var(--neon-purple);
+        }
+        
+        @keyframes hologram-pulse {
+            0%, 100% {
+                transform: rotateY(0deg) scale(1);
+                box-shadow: 0 0 25px var(--neon-purple);
+            }
+            50% {
+                transform: rotateY(180deg) scale(1.1);
+                box-shadow: 0 0 40px var(--neon-blue);
+            }
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .lesson-badge {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        
+        .lesson-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(180deg, var(--text-primary) 0%, var(--neon-blue) 50%, var(--neon-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        
+        .lesson-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+        
+        /* ✅ NEW: Learning Objectives */
+        .objectives-card {
+            background: rgba(255, 215, 0, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .objectives-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .objectives-list {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+        
+        .objectives-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .objectives-list li::before {
+            content: '🎯';
+            font-size: 20px;
+        }
+        
+        .lesson-meta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            background: var(--glass-white);
+            padding: 10px 20px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            font-size: 14px;
+        }
+        
+        .lesson-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hebrew-showcase {
+            text-align: center;
+            padding: 60px 40px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 20px;
+            border: 2px solid var(--glass-border);
+            margin-bottom: 40px;
+        }
+        
+        .hebrew-letter-big {
+            font-size: 120px;
+            font-weight: 900;
+            background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            animation: letterFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes letterFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .letter-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .letter-sound {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+        
+        .neural-button {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(157, 78, 221, 0.5);
+            font-size: 14px;
+        }
+        
+        .neural-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(157, 78, 221, 0.8);
+        }
+        
+        /* ✅ NEW: Letter Details */
+        .letter-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .detail-box {
+            background: var(--glass-white);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .detail-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neon-blue);
+        }
+        
+        /* ✅ NEW: Pronunciation Guide */
+        .pronunciation-guide {
+            background: rgba(157, 78, 221, 0.05);
+            border: 2px solid rgba(157, 78, 221, 0.3);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 40px 0;
+        }
+        
+        .pronunciation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 25px;
+        }
+        
+        .pronunciation-item h4 {
+            color: var(--neon-purple);
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .pronunciation-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .pronunciation-item li {
+            padding: 8px 0;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .pronunciation-item li::before {
+            content: '•';
+            color: var(--neon-purple);
+            font-size: 20px;
+        }
+        
+        /* ✅ NEW: Cultural Context */
+        .cultural-box {
+            background: rgba(255, 16, 240, 0.05);
+            border: 2px solid rgba(255, 16, 240, 0.3);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 40px 0;
+        }
+        
+        .fun-fact {
+            background: var(--glass-white);
+            border-left: 4px solid var(--neon-pink);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .fun-fact-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 40px 0 25px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .examples-grid {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .example-card {
+            background: var(--glass-white);
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .example-card:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--neon-blue);
+            transform: translateX(10px);
+        }
+        
+        .example-icon {
+            font-size: 48px;
+            flex-shrink: 0;
+        }
+        
+        .example-content {
+            flex: 1;
+        }
+        
+        .hebrew-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--neon-blue);
+            margin-bottom: 8px;
+            direction: rtl;
+        }
+        
+        .transliteration {
+            font-size: 18px;
+            color: var(--neon-purple);
+            font-style: italic;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .translation {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+        
+        .practice-section {
+            background: rgba(57, 255, 20, 0.05);
+            border: 2px solid rgba(57, 255, 20, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .practice-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+        
+        .game-section {
+            background: rgba(255, 16, 240, 0.05);
+            border: 2px solid rgba(255, 16, 240, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+        
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .game-card {
+            aspect-ratio: 1;
+            background: var(--glass-white);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .game-card:hover {
+            background: rgba(157, 78, 221, 0.2);
+            border-color: var(--neon-purple);
+            transform: scale(1.05);
+        }
+        
+        .game-card.flipped {
+            background: rgba(157, 78, 221, 0.3);
+            border-color: var(--neon-purple);
+        }
+        
+        .game-card.matched {
+            background: rgba(57, 255, 20, 0.3);
+            border-color: var(--neon-green);
+            pointer-events: none;
+        }
+        
+        .quiz-section {
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+        
+        .quiz-options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .quiz-option {
+            background: var(--glass-white);
+            border: 2px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .quiz-option:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--neon-blue);
+            transform: translateY(-3px);
+        }
+        
+        .quiz-option.correct {
+            background: rgba(57, 255, 20, 0.3);
+            border-color: var(--neon-green);
+        }
+        
+        .quiz-option.incorrect {
+            background: rgba(255, 68, 68, 0.3);
+            border-color: #ff4444;
+        }
+        
+        .feedback-message {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .feedback-message.show {
+            display: block;
+        }
+        
+        .feedback-message.correct {
+            background: rgba(57, 255, 20, 0.2);
+            color: var(--neon-green);
+        }
+        
+        .feedback-message.incorrect {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
+        
+        /* ✅ NEW: Review Summary */
+        .review-summary {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(157, 78, 221, 0.1));
+            border: 2px solid var(--neon-blue);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-box {
+            background: var(--glass-white);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .stat-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--neon-blue);
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-nav {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .nav-btn {
+            flex: 1;
+            padding: 15px 35px;
+            border-radius: 50px;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-secondary {
+            background: var(--glass-white);
+            color: var(--text-primary);
+            border: 2px solid var(--glass-border);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(157, 78, 221, 0.6);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .celebration-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--glass-white);
+            backdrop-filter: blur(40px);
+            border: 2px solid var(--neon-purple);
+            padding: 60px;
+            border-radius: 30px;
+            z-index: 1000;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(157, 78, 221, 0.5);
+        }
+        
+        .celebration-modal.show {
+            display: block;
+            animation: popIn 0.6s ease;
+        }
+        
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .celebration-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .celebration-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        
+        .celebration-text {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .lesson-title {
+                font-size: 32px;
+            }
+            
+            .game-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .lesson-nav {
+                flex-direction: column;
+            }
+            
+            .pronunciation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .letter-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <header class="nav-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="logo-futuristic">
+                <div class="logo-hologram">א</div>
+                <span class="logo-text">Hebrew Master</span>
+            </a>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="lesson-header">
+            <div class="lesson-badge">LESSON 1 OF 60</div>
+            <h1 class="lesson-title">THE LETTER ALEPH</h1>
+            <p class="lesson-subtitle">Your Hebrew journey begins here!</p>
+        </div>
+
+        <!-- ✅ NEW: Learning Objectives -->
+        <div class="objectives-card">
+            <div class="objectives-title">
+                <span>📋</span> By the end of this lesson, you will:
+            </div>
+            <ul class="objectives-list">
+                <li>Recognize the letter Aleph (א) instantly</li>
+                <li>Pronounce it correctly like a native speaker</li>
+                <li>Use it in 10+ Hebrew words</li>
+                <li>Understand its cultural significance in Israeli life</li>
+                <li>Know its historical meaning and symbolism</li>
+            </ul>
+            <div class="lesson-meta">
+                <div class="meta-item">⏱️ Time: 15-20 minutes</div>
+                <div class="meta-item">🎯 Level: Beginner</div>
+                <div class="meta-item">🔥 Difficulty: Easy</div>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <div class="hebrew-showcase">
+                <div class="hebrew-letter-big">א</div>
+                <div class="letter-name">Aleph (אָלֶף)</div>
+                <div class="letter-sound">Sound: Silent or soft "ah" (like the pause in "uh-oh")</div>
+                <button class="neural-button" onclick="playSound()">🔊 HEAR IT</button>
+            </div>
+
+            <!-- ✅ NEW: Letter Details -->
+            <div class="letter-details">
+                <div class="detail-box">
+                    <div class="detail-icon">🔢</div>
+                    <div class="detail-label">Numerical Value</div>
+                    <div class="detail-value">1</div>
+                </div>
+                <div class="detail-box">
+                    <div class="detail-icon">📍</div>
+                    <div class="detail-label">Position</div>
+                    <div class="detail-value">1st Letter</div>
+                </div>
+                <div class="detail-box">
+                    <div class="detail-icon">🎨</div>
+                    <div class="detail-label">Ancient Form</div>
+                    <div class="detail-value">𐤀 (Ox head)</div>
+                </div>
+                <div class="detail-box">
+                    <div class="detail-icon">✨</div>
+                    <div class="detail-label">Symbolizes</div>
+                    <div class="detail-value">Unity, God</div>
+                </div>
+            </div>
+
+            <!-- ✅ NEW: Pronunciation Guide -->
+            <div class="pronunciation-guide">
+                <h2 class="section-title">🗣️ How to Pronounce Aleph</h2>
+                <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 20px;">
+                    Aleph is mostly <strong>silent</strong>, but sometimes makes a soft "ah" sound or a glottal stop (like the pause between "uh" and "oh" in "uh-oh")
+                </p>
+                
+                <div class="pronunciation-grid">
+                    <div class="pronunciation-item">
+                        <h4>👄 Mouth Position</h4>
+                        <ul>
+                            <li>Throat: Slightly relaxed</li>
+                            <li>Tongue: Resting, down</li>
+                            <li>Lips: Neutral position</li>
+                            <li>Sound: Very subtle or silent</li>
+                        </ul>
+                    </div>
+                    <div class="pronunciation-item">
+                        <h4>⚠️ Common Mistakes</h4>
+                        <ul>
+                            <li>❌ Saying "AH" too loudly</li>
+                            <li>✅ Keep it very soft or silent</li>
+                            <li>❌ Confusing with English "A"</li>
+                            <li>✅ Think of it as a placeholder</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ NEW: Cultural Context -->
+            <div class="cultural-box">
+                <h2 class="section-title">🇮🇱 Aleph in Israeli Culture</h2>
+                
+                <div class="fun-fact">
+                    <span class="fun-fact-icon">💡</span>
+                    <strong>Fun Fact:</strong> "Aleph-Bet" (א-ב) is the Hebrew word for "alphabet" - just like how "Alpha-Beta" became "alphabet" in English!
+                </div>
+                
+                <div class="fun-fact">
+                    <span class="fun-fact-icon">🎓</span>
+                    <strong>In School:</strong> Israeli kids learn Aleph first in kindergarten. It's like learning "A" in English - it's where everything begins!
+                </div>
+                
+                <div class="fun-fact">
+                    <span class="fun-fact-icon">🐂</span>
+                    <strong>Ancient Symbol:</strong> Aleph originally looked like an ox head (𐤀) in ancient Hebrew. The ox represented strength and leadership - fitting for the first letter!
+                </div>
+                
+                <div class="fun-fact">
+                    <span class="fun-fact-icon">🏆</span>
+                    <strong>Memory Trick:</strong> Remember: <em>"A is for Aleph, and Aleph is #1!"</em> It's the first letter and has the value of 1.
+                </div>
+            </div>
+
+            <h2 class="section-title">📚 Aleph in Action - 10 Essential Words</h2>
+            <div class="examples-grid">
+                <div class="example-card">
+                    <div class="example-icon">❤️</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">אהבה</div>
+                        <div class="transliteration">ahava</div>
+                        <div class="translation">Love</div>
+                    </div>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">👨</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">אבא</div>
+                        <div class="transliteration">aba</div>
+                        <div class="translation">Dad, Father</div>
+                    </div>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">👩</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">אמא</div>
+                        <div class="transliteration">ima</div>
+                        <div class="translation">Mom, Mother</div>
+                    </div>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">👤</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">אני</div>
+                        <div class="transliteration">ani</div>
+                        <div class="translation">I, Me</div>
+                    </div>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">💡</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">אור</div>
+                        <div class="transliteration">or</div>
+                        <div class="translation">Light</div>
+                    </div>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">✓</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">אמת</div>
+                        <div class="transliteration">emet</div>
+                        <div class="translation">Truth</div>
+                    </div>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">🌍</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">ארץ</div>
+                        <div class="transliteration">eretz</div>
+                        <div class="translation">Land, Country</div>
+                    </div>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">🍎</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">אוכל</div>
+                        <div class="transliteration">ochel</div>
+                        <div class="translation">Food</div>
+                    </div>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">🙏</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">אלוהים</div>
+                        <div class="transliteration">Elohim</div>
+                        <div class="translation">God</div>
+                    </div>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon">👥</div>
+                    <div class="example-content">
+                        <div class="hebrew-text">אדם</div>
+                        <div class="transliteration">adam</div>
+                        <div class="translation">Human, Person</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="practice-section">
+                <h2 class="section-title">🗣️ Speaking Practice</h2>
+                <p class="practice-text">Say "Aleph" out loud 5 times slowly, then 5 times fast. Feel how subtle the sound is!</p>
+                <button class="neural-button" onclick="markSpeakingComplete()" id="practice-btn">
+                    ✓ I PRACTICED!
+                </button>
+                <div class="feedback-message" id="speaking-feedback"></div>
+            </div>
+
+            <div class="game-section">
+                <h2 class="section-title">🎮 Memory Matching Game</h2>
+                <p class="practice-text">Match the Hebrew letters with their English names:</p>
+                <div class="game-grid" id="memory-game"></div>
+                <div class="feedback-message" id="game-feedback"></div>
+            </div>
+
+            <div class="quiz-section">
+                <h2 class="section-title">📝 Quick Quiz</h2>
+                <p class="question-text">Which letter is this?</p>
+                
+                <div class="hebrew-showcase" style="padding: 40px; margin-bottom: 30px;">
+                    <div class="hebrew-letter-big" style="font-size: 80px;">א</div>
+                </div>
+
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(0)">Aleph (א)</div>
+                    <div class="quiz-option" onclick="checkAnswer(1)">Bet (ב)</div>
+                    <div class="quiz-option" onclick="checkAnswer(2)">Gimel (ג)</div>
+                    <div class="quiz-option" onclick="checkAnswer(3)">Dalet (ד)</div>
+                </div>
+
+                <div class="feedback-message" id="quiz-feedback"></div>
+            </div>
+
+            <!-- ✅ NEW: Review Summary -->
+            <div class="review-summary">
+                <h2 class="section-title" style="margin-top: 0;">🎊 Lesson Complete! Review Your Progress</h2>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">
+                    Great job! Here's what you've mastered:
+                </p>
+                
+                <div class="summary-stats">
+                    <div class="stat-box">
+                        <div class="stat-icon">✓</div>
+                        <div class="stat-value" id="activities-done">0/3</div>
+                        <div class="stat-label">Activities Complete</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon">📖</div>
+                        <div class="stat-value">10</div>
+                        <div class="stat-label">Words Learned</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-value" id="time-spent">0m</div>
+                        <div class="stat-label">Time Spent</div>
+                    </div>
+                </div>
+                
+                <p style="color: rgba(255,255,255,0.8); margin-top: 30px; font-size: 18px;">
+                    <strong>🎯 Next Review:</strong> Practice Aleph again tomorrow to boost retention!<br>
+                    <strong>💡 Pro Tip:</strong> Try to spot Aleph in Hebrew signs, books, or online today!
+                </p>
+            </div>
+
+            <div class="lesson-nav">
+                <button class="nav-btn btn-secondary" onclick="goBack()">← BACK TO DASHBOARD</button>
+                <button class="nav-btn btn-primary" id="complete-btn" onclick="completeLesson()" disabled>CONTINUE TO LESSON 2 →</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="celebration-modal" id="celebration">
+        <div class="celebration-emoji">🎉</div>
+        <h2 class="celebration-title">ALEPH MASTERED!</h2>
+        <p class="celebration-text">You're officially on your way to Hebrew fluency! Ready for the next letter?</p>
+        <button class="neural-button" onclick="nextLesson()">LEARN LETTER BET →</button>
+    </div>
+
+    <!-- Firebase v8 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZtiVXvMKX3FodLchIQzIUUqg15htdwyA",
+            authDomain: "ai-hebrew.firebaseapp.com",
+            projectId: "ai-hebrew",
+            storageBucket: "ai-hebrew.firebasestorage.app",
+            messagingSenderId: "63571235516",
+            appId: "1:63571235516:web:6b81c388fca7d4fc39f6b9"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                console.log('User not authenticated, redirecting to login');
+                window.location.href = '/login.html';
+            } else {
+                console.log('User authenticated:', user.email);
+            }
+        });
+
+        let completedActivities = {
+            quiz: false,
+            speaking: false,
+            game: false
+        };
+
+        let gameCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let startTime = Date.now();
+
+        function playSound() {
+            const utterance = new SpeechSynthesisUtterance('Aleph');
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+
+        function markSpeakingComplete() {
+            completedActivities.speaking = true;
+            const feedback = document.getElementById('speaking-feedback');
+            feedback.className = 'feedback-message correct show';
+            feedback.textContent = '✓ Excellent pronunciation practice! You're getting the hang of it!';
+            document.getElementById('practice-btn').disabled = true;
+            document.getElementById('practice-btn').style.opacity = '0.5';
+            updateProgress();
+        }
+
+        function initializeMemoryGame() {
+            const pairs = [
+                { id: 1, content: 'א', type: 'hebrew' },
+                { id: 1, content: 'Aleph', type: 'english' },
+                { id: 2, content: 'ב', type: 'hebrew' },
+                { id: 2, content: 'Bet', type: 'english' },
+                { id: 3, content: 'ג', type: 'hebrew' },
+                { id: 3, content: 'Gimel', type: 'english' }
+            ];
+
+            gameCards = pairs.sort(() => Math.random() - 0.5);
+            const gameGrid = document.getElementById('memory-game');
+
+            gameGrid.innerHTML = gameCards.map((card, index) => 
+                '<div class="game-card" data-id="' + card.id + '" data-index="' + index + '" onclick="flipCard(this)"><span>' + card.content + '</span></div>'
+            ).join('');
+        }
+
+        function flipCard(card) {
+            if (flippedCards.length >= 2 || card.classList.contains('matched')) return;
+
+            card.classList.add('flipped');
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                setTimeout(checkMatch, 800);
+            }
+        }
+
+        function checkMatch() {
+            const card1 = flippedCards[0];
+            const card2 = flippedCards[1];
+            const id1 = card1.getAttribute('data-id');
+            const id2 = card2.getAttribute('data-id');
+
+            if (id1 === id2) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+
+                if (matchedPairs === 3) {
+                    completedActivities.game = true;
+                    const feedback = document.getElementById('game-feedback');
+                    feedback.className = 'feedback-message correct show';
+                    feedback.textContent = '🎉 Perfect match! Your memory is impressive!';
+                    updateProgress();
+                }
+            } else {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+            }
+
+            flippedCards = [];
+        }
+
+        function checkAnswer(index) {
+            const options = document.querySelectorAll('.quiz-option');
+            const feedback = document.getElementById('quiz-feedback');
+
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+
+            if (index === 0) {
+                options[0].classList.add('correct');
+                feedback.className = 'feedback-message correct show';
+                feedback.textContent = '🌟 Perfect! You recognized Aleph instantly! That's how experts do it!';
+                completedActivities.quiz = true;
+                updateProgress();
+            } else {
+                options[index].classList.add('incorrect');
+                options[0].classList.add('correct');
+                feedback.className = 'feedback-message incorrect show';
+                feedback.textContent = '💙 Not quite! This is Aleph (א) - remember, it looks like an ox head turned sideways!';
+            }
+        }
+
+        function updateProgress() {
+            const completed = Object.values(completedActivities).filter(v => v).length;
+            document.getElementById('activities-done').textContent = completed + '/3';
+            
+            const minutes = Math.floor((Date.now() - startTime) / 60000);
+            document.getElementById('time-spent').textContent = minutes + 'm';
+            
+            const allCompleted = completedActivities.quiz && completedActivities.speaking && completedActivities.game;
+            document.getElementById('complete-btn').disabled = !allCompleted;
+            
+            if (allCompleted) {
+                document.getElementById('complete-btn').textContent = '🎊 LESSON COMPLETE! CONTINUE →';
+            }
+        }
+
+        function completeLesson() {
+            document.getElementById('celebration').classList.add('show');
+            let progress = JSON.parse(localStorage.getItem('hebrewProgress') || '{}');
+            progress.lesson1 = true;
+            progress.lesson1CompletedAt = new Date().toISOString();
+            localStorage.setItem('hebrewProgress', JSON.stringify(progress));
+        }
+
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+
+        function nextLesson() {
+            window.location.href = 'lesson2.html';
+        }
+
+        // Stars animation
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        initializeMemoryGame();
+        updateProgress();
+    </script>
+</body>
+</html>
